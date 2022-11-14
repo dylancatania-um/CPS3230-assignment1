@@ -16,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import task2.pageobjects.MarketAlertUmPageObject;
+import utils.Constant;
 import utils.IAlertType;
 
 import java.io.IOException;
@@ -25,18 +26,16 @@ public class MarketAlertUmSteps {
 
     Alert alert;
     WebDriver driver;
-
     MarketAlertUmPageObject marketAlertUmPageObject;
 
     @Before
     public void setup() {
         alert = new Alert();
 
-        System.setProperty("webdriver.chrome.driver", "C:\\webdriver/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", Constant.CHROME_DRIVER_PATH);
         driver = new ChromeDriver();
         alert.setDriver(driver);
         marketAlertUmPageObject = new MarketAlertUmPageObject(driver);
-//        driver.get("https://www.marketalertum.com/Alerts/Login");
     }
 
     @After
@@ -46,9 +45,7 @@ public class MarketAlertUmSteps {
     }
 
     @Given("I am a user of marketalertum")
-    public void iAmAUserOfMarketalertum() throws InterruptedException {
-
-    }
+    public void iAmAUserOfMarketalertum() {  }
 
     @When("I login using valid credentials")
     public void iLoginUsingValidCredentials() throws InterruptedException {
@@ -98,7 +95,6 @@ public class MarketAlertUmSteps {
         alert.setPostedBy("6f14f0e3-2d42-4beb-86b0-674127b1be29");
         alert.setImageUrl("https://m.media-amazon.com/images/I/712Xf2LtbJL._AC_SX679_.jpg");
         alert.setPriceInCents(24999);
-
 
         for(int i = 1; i<=arg0; i++) {
             restCall.createAlert(alert.getAlertType(),

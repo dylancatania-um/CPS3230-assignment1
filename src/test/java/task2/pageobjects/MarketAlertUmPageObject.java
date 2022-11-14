@@ -11,14 +11,6 @@ public class MarketAlertUmPageObject {
 
     public MarketAlertUmPageObject(WebDriver driver) {  this.driver = driver;   }
 
-//    public void setDriver(WebDriver driver) {
-//        this.driver = driver;
-//    }
-//
-//    public String getTitle(){
-//        return driver.getTitle();
-//    }
-
     public String login() {
         driver.get("https://www.marketalertum.com/Alerts/Login");
         WebElement userId = driver.findElement(By.id("UserId"));
