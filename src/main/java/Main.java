@@ -15,7 +15,9 @@ public class Main {
 //        }
 
 
-        alert.createAlertFromAmazonNtimes(5);
+//        alert.createAlertFromAmazonNtimes(5);
+
+        alert.scrapeFiveAlerts();
 
     }
 }

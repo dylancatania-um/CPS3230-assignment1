@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.Invocation;
 import org.openqa.selenium.WebDriver;
+import task1.pageobjects.AmazonPageObject;
 import utils.IAlertType;
 import utils.IStatusCode;
 
@@ -62,6 +63,18 @@ public class AlertTest {
     }
 
     @Test
+    public void testAmazonSearchBox() {
+        //setup
+        AmazonPageObject amazonPageObject = Mockito.mock(AmazonPageObject.class);
+
+//        amazonPageObject.SearchBox("");
+
+        //exercise
+
+        //verify
+    }
+
+    @Test
     public void testCreateAlertCreated() throws IOException {
         //setup
         Alert alert = new Alert();
@@ -100,18 +113,29 @@ public class AlertTest {
         for(int i = 1; i<=3; i++) {
             alert.createAlertFromAmazon();
         }
-//        alert.createAlertFromAmazonNtimes(3);
-
 
         //Here, the invocation of each method of class Alert is being the SUT
         Collection<Invocation> invocations = Mockito.mockingDetails(alert).getInvocations();
-
         int numberOfCalls = invocations.size();
 
         Assertions.assertEquals(3, numberOfCalls);
+    }
 
+    @Test
+    public void testCreateAlertFromAmazonFiveTimes() throws IOException {
+        //setup
+        Alert alert = Mockito.mock(Alert.class);
+        RestCall restCall = Mockito.mock(RestCall.class);
 
+        for(int i = 1; i<=5; i++) {
+            alert.createAlertFromAmazon();
+        }
 
+        //Here, the invocation of each method of class Alert is being the SUT
+        Collection<Invocation> invocations = Mockito.mockingDetails(alert).getInvocations();
+        int numberOfCalls = invocations.size();
+
+        Assertions.assertEquals(5, numberOfCalls);
     }
 
     @Test

@@ -3,8 +3,6 @@ package utils;
 import javax.swing.plaf.PanelUI;
 
 public interface IStatusCode {
-
-
     public static int OK = 200;
     public static int CREATED = 201;
     public static int BAD_REQUEST = 400;
@@ -18,6 +16,5 @@ public interface IStatusCode {
     public static int NOT_IMPLEMENTED = 501;
     public static int BAD_GATEWAY = 502;
     public static int SERVICE_UNAVAILABLE = 503;
-
     public int getStatusCode();
 }
