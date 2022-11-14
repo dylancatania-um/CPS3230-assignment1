@@ -131,7 +131,8 @@ public class Alert {
         driver.findElement(By.id("twotabsearchtextbox")).click();
         amazonPageObject.SearchBox(searchItem);
 
-        for(int i = 2; i<5; i++) {
+        for(int i = 2; i<9; i++) {
+            if(i == 5 || i == 6) continue;
             WebElement img = driver.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div[1]/div/span[1]/div[1]/div["+i+"]/div/div/div/div/div/div[1]/div/div[2]/div/span/a/div/img"));
             img.click();
 
@@ -154,28 +155,28 @@ public class Alert {
             driver.navigate().back();
         }
 
-        for(int i = 7; i<=9; i++) {
-            WebElement img = driver.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div[1]/div/span[1]/div[1]/div["+i+"]/div/div/div/div/div/div[1]/div/div[2]/div/span/a/div/img"));
-            img.click();
-
-            String url = driver.getCurrentUrl();
-
-            String title = driver.findElement(By.id("titleSection")).getText();
-            String priceInEuro = driver.findElement(By.className("a-price-whole")).getText();
-            String priceInCents = driver.findElement(By.className("a-price-fraction")).getText();
-            String concatPrice = priceInCents + priceInEuro;
-
-            String description = driver.findElement(By.id("productDescription")).getText();
-            String imageUrl = driver.findElement(By.id("landingImage")).getAttribute("src");
-
-            String postedBy = "b96e4c56-188e-4745-b07f-a480e1ae94b1";
-
-            RestCall restCall = new RestCall();
-            restCall.createAlert(IAlertType.ELECTRONICS, title, description, url, imageUrl, Integer.parseInt(concatPrice), postedBy);
-            System.out.println(restCall.getStatusCode());
-
-            driver.navigate().back();
-        }
+//        for(int i = 7; i<=9; i++) {
+//            WebElement img = driver.findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div[1]/div/span[1]/div[1]/div["+i+"]/div/div/div/div/div/div[1]/div/div[2]/div/span/a/div/img"));
+//            img.click();
+//
+//            String url = driver.getCurrentUrl();
+//
+//            String title = driver.findElement(By.id("titleSection")).getText();
+//            String priceInEuro = driver.findElement(By.className("a-price-whole")).getText();
+//            String priceInCents = driver.findElement(By.className("a-price-fraction")).getText();
+//            String concatPrice = priceInCents + priceInEuro;
+//
+//            String description = driver.findElement(By.id("productDescription")).getText();
+//            String imageUrl = driver.findElement(By.id("landingImage")).getAttribute("src");
+//
+//            String postedBy = "b96e4c56-188e-4745-b07f-a480e1ae94b1";
+//
+//            RestCall restCall = new RestCall();
+//            restCall.createAlert(IAlertType.ELECTRONICS, title, description, url, imageUrl, Integer.parseInt(concatPrice), postedBy);
+//            System.out.println(restCall.getStatusCode());
+//
+//            driver.navigate().back();
+//        }
 
     }
 

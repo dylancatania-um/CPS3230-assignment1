@@ -2,16 +2,22 @@ package task2.steps;
 
 import Alert.Alert;
 import RESTcall.RestCall;
+import com.beust.ah.A;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.it.Ma;
+import org.junit.After;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import task2.pageobjects.MarketAlertUmPageObject;
+import utils.IAlertType;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -20,6 +26,8 @@ public class MarketAlertUmSteps {
     Alert alert;
     WebDriver driver;
 
+    MarketAlertUmPageObject marketAlertUmPageObject;
+
     @Before
     public void setup() {
         alert = new Alert();
@@ -27,21 +35,24 @@ public class MarketAlertUmSteps {
         System.setProperty("webdriver.chrome.driver", "C:\\webdriver/chromedriver.exe");
         driver = new ChromeDriver();
         alert.setDriver(driver);
-        driver.get("https://www.marketalertum.com/Alerts/Login");
+        marketAlertUmPageObject = new MarketAlertUmPageObject(driver);
+//        driver.get("https://www.marketalertum.com/Alerts/Login");
     }
 
-//    @After
-//    public void teardown(){
-//        alert = null;
-//        driver = null;
-//    }
+    @After
+    public void teardown() {
+        alert = null;
+        driver = null;
+    }
 
     @Given("I am a user of marketalertum")
-    public void iAmAUserOfMarketalertum()  {
+    public void iAmAUserOfMarketalertum() throws InterruptedException {
+
     }
 
     @When("I login using valid credentials")
     public void iLoginUsingValidCredentials() throws InterruptedException {
+        driver.get("https://www.marketalertum.com/Alerts/Login");
         WebElement userId = driver.findElement(By.id("UserId"));
         userId.click();
         userId.sendKeys("b96e4c56-188e-4745-b07f-a480e1ae94b1");
@@ -59,6 +70,7 @@ public class MarketAlertUmSteps {
 
     @When("I login using invalid credentials")
     public void iLoginUsingInvalidCredentials() {
+        driver.get("https://www.marketalertum.com/Alerts/Login");
         WebElement userId = driver.findElement(By.id("UserId"));
         userId.click();
         userId.sendKeys("this-is-an-invalid-user-id");
@@ -76,12 +88,36 @@ public class MarketAlertUmSteps {
 
     @Given("I am an administrator of the website and I upload {int} alerts")
     public void iAmAnAdministratorOfTheWebsiteAndIUploadAlerts(int arg0) throws IOException {
-        alert.createAlertFromAmazonNtimes(arg0);
+
+        RestCall restCall = new RestCall();
+
+        alert.setAlertType(IAlertType.ELECTRONICS);
+        alert.setUrl("https://www.amazon.co.uk/Windows-Display-Ultrabook-Processor-Bluetooth");
+        alert.setDescription("Jumper Windows 11 Laptop 1080P Display,12GB RAM 256GB SSD");
+        alert.setHeading("Jumper Windows 11 Laptop");
+        alert.setPostedBy("6f14f0e3-2d42-4beb-86b0-674127b1be29");
+        alert.setImageUrl("https://m.media-amazon.com/images/I/712Xf2LtbJL._AC_SX679_.jpg");
+        alert.setPriceInCents(24999);
+
+
+        for(int i = 1; i<=arg0; i++) {
+            restCall.createAlert(alert.getAlertType(),
+                                alert.getHeading(),
+                                alert.getDescription(),
+                                alert.getUrl(),
+                                alert.getImageUrl(),
+                                alert.getPriceInCents(),
+                                alert.getPostedBy()
+                            );
+        }
     }
 
     @When("I vew a list of alerts")
-    public void iVewAListOfAlerts() {
+    public void iVewAListOfAlerts() throws InterruptedException {
+
+        marketAlertUmPageObject.login();
         List<WebElement> listOfElements = driver.findElements(By.xpath("/html/body/div/main/table"));
+        //if there is 1 or more alerts, then it can be classified as a list of alerts
         if (listOfElements.size() > 1) {
             Assertions.assertTrue(true);
         }
@@ -157,23 +193,50 @@ public class MarketAlertUmSteps {
     }
 
     @Given("I am an administrator of the website and I upload more than {int} alerts")
-    public void iAmAnAdministratorOfTheWebsiteAndIUploadMoreThanAlerts(int arg0) {
-        try {
-            alert.createAlertFromAmazonNtimes(arg0+1);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public void iAmAnAdministratorOfTheWebsiteAndIUploadMoreThanAlerts(int arg0) throws IOException {
+//        try {
+////            alert.createAlertFromAmazonNtimes(arg0+1);
+////            for(int i = 1; i<=arg0+1; i++) {
+////                alert.createAlertFromAmazon();
+////            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+        alert = new Alert();
+        RestCall restCall = new RestCall();
+
+        alert.setAlertType(IAlertType.ELECTRONICS);
+        alert.setUrl("https://www.amazon.co.uk/Windows-Display-Ultrabook-Processor-Bluetooth");
+        alert.setDescription("Jumper Windows 11 Laptop 1080P Display,12GB RAM 256GB SSD");
+        alert.setHeading("Jumper Windows 11 Laptop");
+        alert.setPostedBy("6f14f0e3-2d42-4beb-86b0-674127b1be29");
+        alert.setImageUrl("https://m.media-amazon.com/images/I/712Xf2LtbJL._AC_SX679_.jpg");
+        alert.setPriceInCents(24999);
+
+        for(int i = 1; i<=arg0+1; i++) {
+            restCall.createAlert(alert.getAlertType(),
+                    alert.getHeading(),
+                    alert.getDescription(),
+                    alert.getUrl(),
+                    alert.getImageUrl(),
+                    alert.getPriceInCents(),
+                    alert.getPostedBy()
+            );
         }
     }
 
     @When("I view a list of alerts I should see {int} alerts")
     public void iViewAListOfAlertsIShouldSeeAlerts(int arg0) {
 
+        marketAlertUmPageObject.login();
         List<WebElement> listOfElements = driver.findElements(By.xpath("/html/body/div/main/table"));
         Assertions.assertEquals(arg0, listOfElements.size());
     }
 
     @When("I view a list of alerts")
     public void iViewAListOfAlerts() {
+        marketAlertUmPageObject.login();
         List<WebElement> listOfElements = driver.findElements(By.xpath("/html/body/div/main/table"));
     }
 
@@ -190,7 +253,22 @@ public class MarketAlertUmSteps {
         restCall.deleteAlerts();
 
         alert.setAlertType(arg0);
-        alert.createAlertFromAmazon();
+//        alert.setAlertType(IAlertType.ELECTRONICS);
+        alert.setUrl("https://www.amazon.co.uk/Windows-Display-Ultrabook-Processor-Bluetooth");
+        alert.setDescription("Jumper Windows 11 Laptop 1080P Display,12GB RAM 256GB SSD");
+        alert.setHeading("Jumper Windows 11 Laptop");
+        alert.setPostedBy("6f14f0e3-2d42-4beb-86b0-674127b1be29");
+        alert.setImageUrl("https://m.media-amazon.com/images/I/712Xf2LtbJL._AC_SX679_.jpg");
+        alert.setPriceInCents(24999);
+
+            restCall.createAlert(alert.getAlertType(),
+                    alert.getHeading(),
+                    alert.getDescription(),
+                    alert.getUrl(),
+                    alert.getImageUrl(),
+                    alert.getPriceInCents(),
+                    alert.getPostedBy()
+            );
     }
 
     @And("the icon displayed should be {string}")
